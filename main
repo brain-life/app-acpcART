@@ -26,6 +26,8 @@ else
 	$ARTHOME/acpcdetect -v -i t1.nii -o t1.nii
 fi
 
+gzip t1.nii
+
 if [ -s t1_ACPC.txt ]
 then 
      echo 0 > finished
