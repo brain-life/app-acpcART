@@ -30,7 +30,7 @@ fi
 mri_convert -i t1.nii -odt float -o t1.nii
 gzip t1.nii
 
-if $(jq -r .crop_reorient config.json)
+if [ $(jq -r .crop_reorient config.json) == true ]; then
 	fslreorient2std t1.nii.gz t1.nii.gz
 	robustfov -i t1.nii.gz -r t1.nii.gz
 fi
