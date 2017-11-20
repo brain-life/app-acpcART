@@ -6,6 +6,7 @@
 if [ $ENV == "IUHPC" ]; then
 	cd $PBS_O_WORKDIR
 	module load freesurfer
+	module load fsl
 fi
 
 export ARTHOME=/N/u/brlife/git/acpcdetect
@@ -29,11 +30,9 @@ fi
 mri_convert -i t1.nii -odt float -o t1.nii
 gzip t1.nii
 
-if [ -s t1_ACPC.txt ]
-then 
-     echo 0 > finished
-else
-	echo "ACPC failed"
-	echo 1 > finished
-	exit 1
-fi		
+if $(jq -r .crop_reorient config.json)
+	fslreorient2std t1.nii.gz t1.nii.gz
+	robustfov -i t1.nii.gz -r t1.nii.gz
+fi
+
+		
