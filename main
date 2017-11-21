@@ -27,7 +27,7 @@ else
 	$ARTHOME/acpcdetect -v -i t1.nii -o t1.nii -qform -M
 fi
 
-mri_convert -i t1.nii -odt float -o t1.nii
+mri_convert -i t1.nii -odt int -o t1.nii
 echo "out data type"
 mri_info t1.nii --type
 
