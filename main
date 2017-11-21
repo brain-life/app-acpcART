@@ -14,6 +14,12 @@ export ARTHOME=/N/u/brlife/git/acpcdetect
 export input_t1=$(jq -r .t1 config.json)
 
 cp $input_t1 .
+
+if [ $(jq -r .crop_reorient config.json) == true ]; then
+	fslreorient2std t1.nii.gz t1.nii.gz
+	robustfov -i t1.nii.gz -r t1.nii.gz
+fi
+
 gunzip t1.nii.gz
 
 datatype=`$mri_info t1.nii --type`
@@ -28,14 +34,10 @@ else
 fi
 
 mri_convert -i t1.nii -odt float -o t1.nii
-echo "out data type"
+echo "out data type:"
 mri_info t1.nii --type
 
 gzip t1.nii
 
-if [ $(jq -r .crop_reorient config.json) == true ]; then
-	fslreorient2std t1.nii.gz t1.nii.gz
-	robustfov -i t1.nii.gz -r t1.nii.gz
-fi
 
 		
