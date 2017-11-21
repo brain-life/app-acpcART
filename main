@@ -28,6 +28,9 @@ else
 fi
 
 mri_convert -i t1.nii -odt float -o t1.nii
+echo "out data type"
+mri_info t1.nii --type
+
 gzip t1.nii
 
 if [ $(jq -r .crop_reorient config.json) == true ]; then
