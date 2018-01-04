@@ -15,8 +15,11 @@ export input_t1=$(jq -r .t1 config.json)
 
 cp $input_t1 .
 
-if [ $(jq -r .crop_reorient config.json) == true ]; then
+if [ $(jq -r .reorient config.json) == true ]; then
 	fslreorient2std t1.nii.gz t1.nii.gz
+fi
+
+if [ $(jq -r .crop config.json) == true ]; then
 	robustfov -i t1.nii.gz -r t1.nii.gz
 fi
 
