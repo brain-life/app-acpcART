@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=8:dc2,walltime=0:05:00
+#PBS -l nodes=1:ppn=8,vmem=8gb,walltime=0:05:00
 #PBS -N acpcART
 #PBS -V
 
@@ -16,6 +16,7 @@ export input_t1=$(jq -r .t1 config.json)
 cp $input_t1 .
 
 if [ $(jq -r .crop_reorient config.json) == true ]; then
+	echo "reorienting and cropping"
 	fslreorient2std t1.nii.gz t1.nii.gz
 	robustfov -i t1.nii.gz -r t1.nii.gz
 fi
