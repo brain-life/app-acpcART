@@ -19,9 +19,6 @@ if [ $(jq -r .reorient config.json) == true ]; then
 	fslreorient2std t1.nii.gz t1.nii.gz
 fi
 
-if [ $(jq -r .crop config.json) == true ]; then
-	robustfov -i t1.nii.gz -r t1.nii.gz
-fi
 
 gunzip t1.nii.gz
 
@@ -36,6 +33,7 @@ else
 	$ARTHOME/acpcdetect -v -i t1.nii -o t1.nii -sform 
 fi
 
+
 mri_convert -i t1.nii -odt float -o t1.nii
 echo "out data type:"
 mri_info t1.nii --type
@@ -43,4 +41,7 @@ mri_info t1.nii --type
 gzip t1.nii
 
 
+if [ $(jq -r .crop config.json) == true ]; then
+	robustfov -i t1.nii.gz -r t1.nii.gz
+fi
 		
