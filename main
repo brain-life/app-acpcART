@@ -4,10 +4,9 @@
 #PBS -V
 
 [ $PBS_O_WORKDIR ] && cd $PBS_O_WORKDIR
-if [ $ENV == "IUHPC" ]; then
-	module load freesurfer
-	module load fsl
-fi
+
+module load freesurfer
+module load fsl
 
 export ARTHOME=/N/u/brlife/git/acpcdetect
 export input_t1=$(jq -r .t1 config.json)
