@@ -21,17 +21,15 @@ fi
 gunzip t1.nii.gz
 
 datatype=`$mri_info t1.nii --type`
-if [ $datatype == "uchar" ]; then
-   echo "doing acpc alignment" 
-   $ARTHOME/acpcdetect -v -i t1.nii -sform 
-else
-	echo "converting datatype to uchar"
-	mri_convert -i t1.nii -odt uchar -o t1.nii
-	echo "doing acpc alignment"
-	$ARTHOME/acpcdetect -v -i t1.nii -sform 
+if [ $datatype != "uchar" ]; then
+    echo "converting datatype to uchar"
+    mri_convert -i t1.nii -odt uchar -o t1.nii
 fi
+echo "doing acpc alignment"
+$ARTHOME/acpcdetect -v -i t1.nii -o t1.aligned.nii 
 
-mri_convert -i t1.nii -odt float -o t1.nii
+echo "converting datatype to float"
+mri_convert -i t1.aligned.nii -odt float -o t1.nii
 echo "out data type:"
 mri_info t1.nii --type
 
