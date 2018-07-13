@@ -3,6 +3,8 @@
 #PBS -N acpcART
 #PBS -V
 
+set -e
+
 [ $PBS_O_WORKDIR ] && cd $PBS_O_WORKDIR
 
 module load freesurfer
@@ -14,13 +16,13 @@ export input_t1=$(jq -r .t1 config.json)
 cp $input_t1 .
 
 if [ $(jq -r .reorient config.json) == true ]; then
-	echo "reorienting"
+	echo "running fslreorient2std"
 	fslreorient2std t1.nii.gz t1.nii.gz
 fi
 
 gunzip t1.nii.gz
 
-datatype=`$mri_info t1.nii --type`
+datatype=`mri_info t1.nii --type`
 if [ $datatype != "uchar" ]; then
     echo "converting datatype to uchar"
     mri_convert -i t1.nii -odt uchar -o t1.nii
