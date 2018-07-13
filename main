@@ -32,8 +32,9 @@ $ARTHOME/acpcdetect -v -i t1.nii -o t1.aligned.nii
 
 echo "converting datatype to float"
 mri_convert -i t1.aligned.nii -odt float -o t1.nii
-echo "out data type:"
-mri_info t1.nii --type
+
+#echo "out data type:"
+#mri_info t1.nii --type
 
 gzip t1.nii
 
