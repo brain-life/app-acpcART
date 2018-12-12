@@ -3,12 +3,12 @@
 #PBS -N acpcART
 #PBS -V
 
-set -e
-
-[ $PBS_O_WORKDIR ] && cd $PBS_O_WORKDIR
+#TODO This app uses /N/u/brlife/git/acpcdetect locally installed. 
 
 module load freesurfer
 module load fsl
+
+set -e
 
 export ARTHOME=/N/u/brlife/git/acpcdetect
 export input_t1=$(jq -r .t1 config.json)
