@@ -13,7 +13,7 @@ set -e
 export ARTHOME=/N/u/brlife/git/acpcdetect
 export input_t1=$(jq -r .t1 config.json)
 
-cp $input_t1 .
+cp $input_t1 t1.nii.gz
 
 if [ $(jq -r .reorient config.json) == true ]; then
 	echo "running fslreorient2std"
