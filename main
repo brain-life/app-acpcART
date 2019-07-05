@@ -6,40 +6,27 @@
 #TODO This app uses /N/u/brlife/git/acpcdetect locally installed. 
 
 module load freesurfer
-module load fsl
 
 set -e
 
-export ARTHOME=/N/u/brlife/git/acpcdetect
 export input_t1=$(jq -r .t1 config.json)
-
 cp $input_t1 t1.nii.gz
 
-if [ $(jq -r .reorient config.json) == true ]; then
-	echo "running fslreorient2std"
-	fslreorient2std t1.nii.gz t1.nii.gz
-fi
-
-if [ $(jq -r .crop config.json) == true ]; then
-	echo "cropping neck"
-	robustfov -i t1.nii.gz -r t1.nii.gz
-fi
+time singularity exec -e docker://brainlife/fsl:5.0.9 ./fsl.sh
 
 gunzip t1.nii.gz
-
 datatype=`mri_info t1.nii --type`
 if [ $datatype != "uchar" ]; then
     echo "converting datatype to uchar"
     mri_convert -i t1.nii -odt uchar -o t1.nii
 fi
-echo "doing acpc alignment"
+
+#do acpcdetect
+export ARTHOME=/N/u/brlife/git/acpcdetect
 $ARTHOME/acpcdetect -v -i t1.nii -o t1.aligned.nii 
 
 echo "converting datatype to float"
 mri_convert -i t1.aligned.nii -odt float -o t1.nii
-
-#echo "out data type:"
-#mri_info t1.nii --type
 
 gzip t1.nii
 
