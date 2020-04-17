@@ -10,7 +10,7 @@ module load freesurfer
 set -e
 
 export input_t1=$(jq -r .t1 config.json)
-cp $input_t1 t1.nii.gz
+install $input_t1 t1.nii.gz
 
 time singularity exec -e docker://brainlife/fsl:5.0.9 ./fsl.sh
 
